@@ -726,6 +726,7 @@ UnityEngine.ScriptingRuntime::GetAllUserAssemblies
 UnityEngine.Shader::PropertyToID
 UnityEngine.Shader::TagToID
 UnityEngine.Shader::DisableKeyword
+UnityEngine.Shader::SetGlobalFloatImpl
 UnityEngine.SortingLayer::GetLayerValueFromID
 UnityEngine.Sprite::GetPacked
 UnityEngine.Sprite::GetPackingMode

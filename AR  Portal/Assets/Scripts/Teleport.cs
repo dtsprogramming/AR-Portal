@@ -6,51 +6,64 @@ using UnityEngine.Rendering;
 public class Teleport : MonoBehaviour
 {
     [SerializeField] Material[] materials;
-    [SerializeField] GameObject[] objects;
+    [SerializeField] Transform device;
+
+    bool wasInFront = false;
+    bool inOtherWorld = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        ExitPortal();
+        SetMaterials(false);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.name != "ARCamera")
+        if (other.transform != device)
         {
             return;
         }
 
-        // Outside of portal
-        if (transform.position.z > other.transform.position.z)
-        {
-            ExitPortal();
-        }
-        // Inside of Portal
-        else
-        {
-            EnterPortal();
-        }
+        wasInFront = GetIsInFront();
     }
 
-    void ExitPortal()
+    bool GetIsInFront()
     {
-        foreach (var mat in materials)
-        {
-            mat.SetInt("_StencilTest", (int)CompareFunction.Equal);
-        }
+        Vector3 pos = transform.InverseTransformPoint(device.position);
+        return pos.z >= 0 ? true : false;
     }
 
-    void EnterPortal()
+    private void OnTriggerStay(Collider other)
     {
-        foreach (var mat in materials)
+        if (other.transform != device)
         {
-            mat.SetInt("_StencilTest", (int)CompareFunction.NotEqual);
+            return;
         }
+
+        bool isInFront = GetIsInFront();
+
+        if ((isInFront && !wasInFront) || (wasInFront && !isInFront))
+        {
+            inOtherWorld = !inOtherWorld;
+            SetMaterials(inOtherWorld);
+        }
+
+        wasInFront = isInFront;
+    }
+
+    void SetMaterials(bool fullRender)
+    {
+        var stencilTest = fullRender ? CompareFunction.NotEqual : CompareFunction.Equal;
+        Shader.SetGlobalInt("_StencilTest", (int)stencilTest);
+
+        // foreach (var mat in materials)
+        // {
+        //     mat.SetInt("_StencilTest", (int)stencilTest);
+        // }
     }
 
     private void OnDestroy()
     {
-        EnterPortal();
+        SetMaterials(true);
     }
 }
