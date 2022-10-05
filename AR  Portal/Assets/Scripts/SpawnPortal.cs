@@ -5,25 +5,26 @@ using UnityEngine.Video;
 
 public class SpawnPortal : MonoBehaviour
 {
-    [SerializeField] VideoPlayer videoPlayer;
+    [SerializeField] GameObject videoPlayer;
+    [SerializeField] GameObject particles;
+    [SerializeField] GameObject portalWindow;
 
     private Animator anim;
-    private Transform tf;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        tf = gameObject.GetComponent<Transform>();
     }
 
-    void Update()
-    {
-        
-    }
-
-    public void RaisePortal()
+    public void DropPortal()
     {
         anim.SetBool("isPlaced", true);
-        videoPlayer.SetDirectAudioMute(0, false);
+    }
+
+    void ActivatePortal()
+    {
+        particles.SetActive(true);
+        portalWindow.SetActive(true);
+        videoPlayer.SetActive(true);
     }
 }
