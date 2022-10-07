@@ -5,9 +5,8 @@ using UnityEngine.Video;
 
 public class SpawnPortal : MonoBehaviour
 {
-    [SerializeField] GameObject videoPlayer;
-    [SerializeField] GameObject particles;
-    [SerializeField] GameObject portalWindow;
+    [SerializeField]
+    GameObject[] portalActivation;
 
     private Animator anim;
 
@@ -23,8 +22,9 @@ public class SpawnPortal : MonoBehaviour
 
     void ActivatePortal()
     {
-        particles.SetActive(true);
-        portalWindow.SetActive(true);
-        videoPlayer.SetActive(true);
+        foreach (GameObject gameObject in portalActivation)
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

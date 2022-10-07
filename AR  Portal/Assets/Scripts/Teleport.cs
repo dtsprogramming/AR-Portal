@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class Teleport : MonoBehaviour
 {
-    [SerializeField] Material[] materials;
     [SerializeField] Transform device;
 
     bool wasInFront = false;
@@ -55,11 +53,6 @@ public class Teleport : MonoBehaviour
     {
         var stencilTest = fullRender ? CompareFunction.NotEqual : CompareFunction.Equal;
         Shader.SetGlobalInt("_StencilTest", (int)stencilTest);
-
-        // foreach (var mat in materials)
-        // {
-        //     mat.SetInt("_StencilTest", (int)stencilTest);
-        // }
     }
 
     private void OnDestroy()
